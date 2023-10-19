@@ -9,8 +9,12 @@ interface ProjectListProps {
 
 function ProjectList({ projects }: ProjectListProps) {
   const [projectBeingEdited, setProjectBeingEdited] = useState({});
+
   const handleEdit = (project: Project) => {
     setProjectBeingEdited(project);
+  }
+  const cancelEditing = () => {
+    setProjectBeingEdited({});
   }
 
   return (
@@ -18,7 +22,7 @@ function ProjectList({ projects }: ProjectListProps) {
       {projects.map((project) => (
         <div key={project.id} className="cols-sm">
           {project === projectBeingEdited ? (
-            <ProjectForm />
+            <ProjectForm onCancel={cancelEditing} />
           ) : (
             <ProjectCard project={project} onEdit={handleEdit} />
           )}
