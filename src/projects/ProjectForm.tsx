@@ -1,13 +1,14 @@
-import React, {SyntheticEvent} from "react"
+import React, {SyntheticEvent, useState} from "react"
 import { Project } from "./Project";
 
 interface ProjectFormProps {
   onCancel: () => void;
   onSave: (project: Project) => void;
+  project: Project;
 }
 
-function ProjectForm({ onCancel, onSave }: ProjectFormProps) {
-
+function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormProps) {
+  const [project, setProject] = useState(initialProject);
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     onSave(new Project({ name: 'Updated Project'}));
