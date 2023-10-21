@@ -7,14 +7,14 @@ interface ProjectFormProps {
   project: Project;
 }
 
-function ProjectForm(
-  {
-    onCancel,
-    onSave,
-    project: initialProject
-  }: ProjectFormProps
-  ) {
+function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormProps) {
+
   const [project, setProject] = useState(initialProject);
+  const [errors, setErrors] = useState({
+    name: '',
+    description: '',
+    budget: ''
+  });
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -38,7 +38,7 @@ function ProjectForm(
   };
 
   return (
-    <form className="input-group vertical">
+    <form className="input-group vertical" onSubmit={handleSubmit} >
       <label htmlFor="name">Project Name</label>
       <input
         type="text"
