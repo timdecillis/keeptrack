@@ -37,6 +37,28 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
     });
   };
 
+  function validate(project: Project) {
+    let errors: any = {name: '', description: '', budget: ''};
+    if (project.name.length === 0) {
+      errors.name = 'Name is required';
+    }
+    if (project.description.length === 0) {
+      errors.description = 'Description is required';
+    }
+    if (project.budget === 0) {
+      errors.budget = 'Budget must be more that $0';
+    }
+    return errors;
+  }
+
+  function isValid() {
+    return (
+      errors.name.length === 0 &&
+      errors.description.length === 0 &&
+      errors.budget.length ===0
+    );
+  }
+
   return (
     <form className="input-group vertical" onSubmit={handleSubmit} >
       <label htmlFor="name">Project Name</label>
