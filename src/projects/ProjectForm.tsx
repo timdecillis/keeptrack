@@ -18,6 +18,7 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
+    if (!isValid()) return;
     onSave(project);
   }
 
@@ -35,10 +36,11 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
       updatedProject = new Project({ ...p, ...change });
       return updatedProject;
     });
+    setErrors(() => validate(updatedProject));
   };
 
   function validate(project: Project) {
-    let errors: any = {name: '', description: '', budget: ''};
+    let errors: any = { name: '', description: '', budget: '' };
     if (project.name.length === 0) {
       errors.name = 'Name is required';
     }
@@ -55,7 +57,7 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
     return (
       errors.name.length === 0 &&
       errors.description.length === 0 &&
-      errors.budget.length ===0
+      errors.budget.length === 0
     );
   }
 
@@ -69,21 +71,43 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
         value={project.name}
         onChange={handleChange}
       />
+      {errors.name.length > 0 && (
+        <div className="card error">
+          <p>{errors.name}</p>
+        </div>
+      )}
       <label htmlFor="description">Project Description</label>
       <textarea
         name="description"
         placeholder="enter description"
         value={project.budget}
         onChange={handleChange}
-      ></textarea>
+      />
+      {errors.description.length > 0 && (
+        <div className="card error">
+          <p>{errors.description}</p>
+        </div>
+      )}
       <label htmlFor="budget">Project Budget</label>
       <input type="number" name="budget" placeholder="enter budget" />
+      <input
+        type="number"
+        name="budget"
+        placeholder="enter budget"
+        value={project.budget}
+        onChange={handleChange}
+      />
+      {errors.budget.length > 0 && (
+        <div className="card error">
+          <p>{errors.budget}</p>
+        </div>
+      )}
       <label htmlFor="isActive">Active?</label>
       <input
-        type="checkbox"
-        name="isActive"
-        checked={project.isActive}
-        onChange={handleChange}
+      type="checkbox"
+      name="isActive"
+      checked={project.isActive}
+      onChange={handleChange}
       />
       <div className="input-group">
         <button className="primary bordered medium">Save</button>
@@ -91,7 +115,7 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
         <button onClick={onCancel} type="button" className="bordered medium">cancel</button>
       </div>
     </form>
-  )
+  );
 }
 
 export default ProjectForm;
