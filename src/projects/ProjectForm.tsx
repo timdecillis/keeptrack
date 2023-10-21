@@ -18,6 +18,7 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
+    if (!isValid()) return;
     onSave(project);
   }
 
@@ -35,6 +36,7 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
       updatedProject = new Project({ ...p, ...change });
       return updatedProject;
     });
+    setErrors(() => validate(updatedProject));
   };
 
   function validate(project: Project) {
